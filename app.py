@@ -15,7 +15,7 @@ from langchain_classic.chains import RetrievalQA
 
 
 
-#from langchain.vectorstores import FAISS
+#from langchain.vectorstores import FAISS added
 from langchain_community.vectorstores import FAISS
 from QASystem.ingestion import data_ingestion,get_vector_store
 

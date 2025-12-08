@@ -1,16 +1,27 @@
-# Dockerfile contents (assuming you are using the slim image)
-FROM python:3.10-slim-bullseye
+# Stage 1: Builder Stage - Handles all installations and heavy lifting
+FROM python:3.10-slim-bullseye AS builder
 
 WORKDIR /app
 
-COPY . /app/
-
-# ADDED: Install build tools needed by many Python packages
+# Install build essentials for packages that need compilation
 RUN apt-get update && apt-get install -y build-essential \
-    # Optional clean up line to keep image size small
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install -r requirements.txt
+COPY requirements.txt .
+
+# Use no-cache-dir to save disk space during installation
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Stage 2: Final (Runtime) Stage - A clean environment for execution
+FROM python:3.10-slim-bullseye AS runtime
+
+WORKDIR /app
+
+# Copy only the installed packages from the builder stage
+COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+
+# Copy the rest of your application code
+COPY . /app/
 
 EXPOSE 8501
 

@@ -2,11 +2,10 @@ FROM python:3.9-slim-buster
 
 WORKDIR /app
 
-COPY . /app/
+COPY requirements.txt .  # Copies to /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY requirements.txt /app/requirements.txt
-RUN pip install -r requirements.txt
-#RUN pip install -r /app/requirements.txt
+# ... rest of your Dockerfile
 
 EXPOSE 8501
 

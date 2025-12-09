@@ -5,7 +5,6 @@ WORKDIR /app
 COPY requirements.txt .  # Copies to /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# ... rest of your Dockerfile
 
 EXPOSE 8501
 
